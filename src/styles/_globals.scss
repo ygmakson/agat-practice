@@ -1,0 +1,25 @@
+@use 'helpers' as *;
+
+body {
+  font-family: var(--font-family);
+  font-size: rem(16);
+  background-color: var(--color-light);
+  transition-duration: .2s;
+  overflow-inline: hidden;
+  min-height: 100vh;
+  color: var(--color-gray-dark);
+  a {
+    color: var(--black);
+    @include hover {
+      color: var(--color-yellow);
+    }
+  }
+  h2 {
+    font-size: fluid(30, 18);
+    font-weight: 500;
+  }
+}
+
+a, button, input {
+  transition: all .15s;
+}

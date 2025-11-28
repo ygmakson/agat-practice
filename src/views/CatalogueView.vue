@@ -1,8 +1,11 @@
 <script setup>
+
+import Header from "@/layouts/Header.vue";
+
 </script>
 
 <template>
-<router-view />
+<Header />
 </template>
 
 <style scoped>
