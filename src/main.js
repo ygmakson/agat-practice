@@ -4,6 +4,7 @@ import router from '@/router'
 import {Fancybox} from "@fancyapps/ui";
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import '@/styles/main.scss'
+import {IMaskComponent} from "vue-imask";
 
 
 Fancybox.bind('[data-fancybox]', {
@@ -11,5 +12,8 @@ Fancybox.bind('[data-fancybox]', {
   dragToClose: false,
 })
 
+const app = createApp(App)
 
-createApp(App).use(router).mount('#app')
+app.component('imask-input', IMaskComponent)
+app.use(router)
+app.mount("#app")

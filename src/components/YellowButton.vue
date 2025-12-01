@@ -1,12 +1,16 @@
 <script setup>
+import {ref} from "vue";
+
 defineProps({
   clickFunction: Function,
   id: String,
+  type: String
 })
+
 </script>
 
 <template>
-<button class="button" @click="clickFunction" :id="id">
+<button :type="type" class="button" @click="clickFunction" :id="id">
   <slot></slot>
 </button>
 </template>
@@ -18,5 +22,9 @@ defineProps({
   background-color: var(--color-yellow);
   padding-block: fluid(16, 12);
   white-space: nowrap;
+  border: 1px solid var(--color-yellow);
+  @include hover {
+    background: none;
+  }
 }
 </style>

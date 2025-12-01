@@ -1,11 +1,22 @@
 <script setup>
 
+import {onMounted, ref} from 'vue'
+
 import Arrow from "@/assets/images/icons/arrow-top-right.svg";
 import CloseModal from '@/assets/images/icons/close-modal.svg'
 import YellowButton from "@/components/YellowButton.vue";
 import {useIsScreenWidth} from "@/VueHooks/useIsScreenWidth.js";
+import FormInput from "@/components/FormInput.vue";
 
 const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
+
+const masks = {
+  phoneMask: '+{7} (000) 000-00-00',
+}
+
+const phone = ref('')
+const name = ref('')
+
 </script>
 
 <template>
@@ -34,14 +45,15 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
       <form
           action="#"
           class="modal__form"
+          id="form-modal"
       >
         <label class="modal__label" for="#name">
           Имя:
-          <input class="modal__input" type="text" id="#name-phone" required placeholder="Имя">
+          <FormInput v-model="name" placeholder="Имя" id="name" required />
         </label>
         <label class="modal__label" for="#name">
           Телефон:
-          <input class="modal__input" type="text" id="#number-phone" required placeholder="Телефон">
+          <FormInput v-model="phone" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" required />
         </label>
         <div class="modal__bottom">
           <label for="">
@@ -49,7 +61,7 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
             <span class="checkbox-custom"></span>
             Даю согласие на обработку персональных данных
           </label>
-          <YellowButton class="modal__btn">Заказать звонок</YellowButton>
+          <YellowButton type="submit" class="modal__btn" form="form-modal">Заказать звонок</YellowButton>
         </div>
       </form>
     </div>
@@ -176,5 +188,9 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
     font-weight: 600;
     padding-inline: 1rem;
   }
+}
+
+.red {
+  border-color: red;
 }
 </style>

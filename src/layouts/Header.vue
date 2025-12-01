@@ -1,13 +1,30 @@
 <script setup>
-
+import {ref} from "vue";
 import PhoneModal from "@/components/PhoneModal.vue";
 import GeoPoint from "@/assets/images/icons/geo-point.svg"
 import Logo from '@/assets/images/icons/Logo.svg'
+import CloseBtn from '@/assets/images/icons/close-modal.svg'
 import SearchInput from "@/components/SearchInput.vue";
 import BurgerButtonMenu from "@/components/BurgerButtonMenu.vue";
 import {useIsScreenWidth} from "@/VueHooks/useIsScreenWidth.js";
 
-const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
+const {isScreenWidth: isMobile} = useIsScreenWidth(521) // Кастомный хук
+console.log(isMobile)
+
+const isOpenNav = ref(false)
+function OpenNav(state) {
+  isOpenNav.value = state
+  console.log(`Меню открыто: ${isOpenNav.value}`)
+}
+
+const pages = ref([
+  {page: 'Каталог продукции', path: '/'},
+  {page: 'Производители', path: '/'},
+  {page: 'Сервисное обслуживание', path: '/'},
+  {page: 'Акции', path: '/'},
+  {page: 'Услуги', path: '/'},
+  {page: 'О компании', path: '/'},
+])
 </script>
 
 <template>
@@ -20,25 +37,32 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
     </div>
   </div>
   <div class="header__bottom">
-    <div v-if="!isScreenWidth" class="header__bottom-inner container">
+    <div v-if="!isMobile" class="header__bottom-inner container">
       <Logo class="header__logo"/>
       <SearchInput class="header__search"/>
-      <BurgerButtonMenu class="header__burger"/>
+      <BurgerButtonMenu @OpenCloseNav="OpenNav" class="header__burger"/>
     </div>
 
     <!-- === Отображается на телефоне === -->
 
-    <div v-if="isScreenWidth" class="header__bottom-inner-mobile container">
+    <div v-if="isMobile" class="header__bottom-inner-mobile container">
       <div class="header__bottom-top">
         <Logo class="header__logo"/>
-        <BurgerButtonMenu class="header__burger"/>
+        <BurgerButtonMenu @OpenCloseNav="OpenNav" class="header__burger"/>
       </div>
       <SearchInput class="header__search"/>
     </div>
 
     <!-- ================================== -->
 
+    <!-- === Выпадающяя навигация === -->
+
   </div>
+  <nav class="header__nav" :class="{'nav-active': isOpenNav}">
+    <ul class="header__nav-list container">
+      <li v-for="page in pages" :key="page.page" class="header__nav-item"><router-link :to="page.path">{{page.page}}</router-link></li>
+    </ul>
+  </nav>
 </header>
 </template>
 
@@ -48,7 +72,11 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
 @use '@/styles/helpers' as *;
 
 .header {
+  position: fixed;
+  width: 100vw;
   &__top {
+    position: relative;
+    z-index: 20;
     padding-block: fluid(8, 4);
     background-color: var(--color-gray-dark);
     &-inner {
@@ -67,8 +95,12 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
   }
 
   &__bottom {
+    position: relative;
+    z-index: 20;
     background-color: var(--color-gray);
     padding-block: rem(16);
+    border-bottom: 1px solid var(--color-white);
+
     &-inner {
       display: flex;
       align-items: center;
@@ -92,11 +124,28 @@ const {isScreenWidth} = useIsScreenWidth(521) // Кастомный хук
     width: 100%;
   }
 
-  &__search {
-    @include mobile {
-
+  &__nav {
+    position: relative;
+    z-index: 9;
+    background-color: var(--color-gray);
+    transform: translateY(-150%);
+    transition-duration: .2s;
+    &-list {
+      display: flex;
+      justify-content: space-between;
+      padding-block: 1rem;
+      @include tablet {
+        flex-direction: column;
+        gap: 2rem;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
+}
+
+.nav-active {
+  transform: translateY(0);
 }
 
 </style>

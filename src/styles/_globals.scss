@@ -8,12 +8,6 @@ body {
   overflow-inline: hidden;
   min-height: 100vh;
   color: var(--color-gray-dark);
-  a {
-    color: var(--black);
-    @include hover {
-      color: var(--color-yellow);
-    }
-  }
   h2 {
     font-size: fluid(30, 18);
     font-weight: 500;
@@ -22,4 +16,17 @@ body {
 
 a, button, input {
   transition: all .15s;
+}
+
+button {
+  @include hover {
+    color: var(--color-yellow);
+  }
+}
+
+a {
+  color: var(--color-white);
+  @include hover {
+    color: var(--color-yellow);
+  }
 }

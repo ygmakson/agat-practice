@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@fancyapps/ui": "^6.1.6",
+    "imask": "^7.6.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.24",
+    "vue-imask": "^7.6.1",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
