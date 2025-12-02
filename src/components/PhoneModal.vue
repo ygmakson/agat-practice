@@ -16,6 +16,33 @@ const masks = {
 
 const phone = ref('')
 const name = ref('')
+const checkForm = ref(false)
+
+const inputName = ref(null)
+const inputPhone = ref(null)
+const checkBox = ref(null)
+
+const errName = ref(false)
+const errPhone = ref(false)
+const errCheck = ref(false)
+
+function validForm() {
+  const valueName = inputName.value.inputRef.value
+  const valuePhone = inputPhone.value.inputRef.value
+  errName.value = valueName.trim().length < 2;
+  errName.value ? inputName.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputName.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
+  errPhone.value = valuePhone.length < 18;
+  errPhone.value ? inputPhone.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputPhone.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
+  errCheck.value = !checkForm.value;
+  errCheck.value ? checkBox.value.style.borderColor = 'var(--color-yellow)' : ''
+  if (!errName.value && !errPhone.value && !errCheck.value) {
+    console.log(`Имя: ${valueName}
+    Телефон: ${valuePhone}
+    Согласие на обработку данных: ${checkForm.value}`)
+    window.location.reload()
+  }
+}
+
 
 </script>
 
@@ -46,22 +73,17 @@ const name = ref('')
           action="#"
           class="modal__form"
           id="form-modal"
+          @submit.prevent="validForm"
       >
-        <label class="modal__label" for="#name">
-          Имя:
-          <FormInput v-model="name" placeholder="Имя" id="name" required />
-        </label>
-        <label class="modal__label" for="#name">
-          Телефон:
-          <FormInput v-model="phone" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" required />
-        </label>
+        <FormInput :hasError="errName" ref="inputName" label="имя" placeholder="Имя" id="name" />
+        <FormInput :hasError="errPhone" ref="inputPhone" label="телефон" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" />
         <div class="modal__bottom">
-          <label for="">
-            <input type="checkbox" class="checkbox" id="requirment-phone" required>
-            <span class="checkbox-custom"></span>
+          <label for="" :class="{'check-error': errCheck}">
+            <input type="checkbox" v-model="checkForm" class="checkbox" id="requirment-phone" >
+            <span ref="checkBox" class="checkbox-custom"></span>
             Даю согласие на обработку персональных данных
           </label>
-          <YellowButton type="submit" class="modal__btn" form="form-modal">Заказать звонок</YellowButton>
+          <YellowButton ref="submitBtn" @click="validForm" class="modal__btn" form="form-modal">Заказать звонок</YellowButton>
         </div>
       </form>
     </div>
@@ -147,7 +169,7 @@ const name = ref('')
 
     @include mobile {
       flex-direction: column;
-      gap: 1rem;
+      gap: 2rem;
     }
 
     label {
@@ -192,5 +214,15 @@ const name = ref('')
 
 .red {
   border-color: red;
+}
+
+.check-error {
+  &::after {
+    content: 'Подтвердите согласие';
+    color: var(--color-yellow);
+    font-size: rem(14);
+    position: absolute;
+    bottom: -20px;
+  }
 }
 </style>

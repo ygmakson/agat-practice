@@ -74,6 +74,8 @@ const pages = ref([
 .header {
   position: fixed;
   width: 100vw;
+  top: 0;
+  z-index: 99;
   &__top {
     position: relative;
     z-index: 20;
@@ -125,11 +127,16 @@ const pages = ref([
   }
 
   &__nav {
-    position: relative;
     z-index: 9;
+    display: flex;
+    width: 100vw;
+    top: 0;
+
+    flex-direction: column;
     background-color: var(--color-gray);
     transform: translateY(-150%);
     transition-duration: .2s;
+    @include hide;
     &-list {
       display: flex;
       justify-content: space-between;
@@ -145,6 +152,8 @@ const pages = ref([
 }
 
 .nav-active {
+  @include show;
+  height: 100%;
   transform: translateY(0);
 }
 

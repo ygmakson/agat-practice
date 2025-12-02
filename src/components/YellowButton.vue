@@ -7,10 +7,15 @@ defineProps({
   type: String
 })
 
+const btn = ref(null)
+
+defineExpose({
+  btn
+})
 </script>
 
 <template>
-<button :type="type" class="button" @click="clickFunction" :id="id">
+<button ref="btn" :type="type" class="button" @click="clickFunction" :id="id">
   <slot></slot>
 </button>
 </template>
