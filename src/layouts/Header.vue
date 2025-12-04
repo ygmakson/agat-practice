@@ -72,7 +72,7 @@ const pages = ref([
 @use '@/styles/helpers' as *;
 
 .header {
-  position: fixed;
+  position: sticky;
   width: 100vw;
   top: 0;
   z-index: 99;
@@ -127,17 +127,20 @@ const pages = ref([
   }
 
   &__nav {
-    z-index: 9;
+    position: fixed;
     display: flex;
     width: 100vw;
-    top: 0;
-
     flex-direction: column;
     background-color: var(--color-gray);
     transform: translateY(-150%);
     transition-duration: .2s;
+    max-height: 51px;
     @include hide;
+    @include tablet {
+      max-height: 307px;
+    }
     &-list {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       padding-block: 1rem;
