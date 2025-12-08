@@ -10,6 +10,7 @@ defineProps({
   id: String,
   hasError: Boolean,
   modelValue: String,
+  visuallyLabel: Boolean,
 })
 
 const inputRef = ref(null)
@@ -24,34 +25,41 @@ defineExpose({
 </script>
 
 <template>
-  <label>
-    {{ label }}:
+  <div>
+    <label :class="{'visually-hidden': !visuallyLabel}" :for="id"> {{ label}}:</label>
     <input ref="inputRef" v-mask="mask" class="input" :name="id" :id="id" :placeholder="placeholder" :type="type" />
     <span :class="{active: hasError}">Введите {{label}} корректно</span>
-  </label>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/styles/helpers' as *;
-label {
+
+div {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  text-transform: capitalize;
-  .input {
-    width: 100%;
-    padding: 1rem;
-    border: var(--border);
-    &:focus {
-      border-color: var(--color-gray-lite);
-    }
-  }
+}
 
-  span {
-    color: var(--color-yellow);
-    font-size: rem(14);
-    text-transform: none;
-    display: none;
+label {
+  text-transform: capitalize;
+}
+
+span {
+  color: var(--color-yellow);
+  font-size: rem(14);
+  text-transform: none;
+  display: none;
+}
+
+.input {
+  width: 100%;
+  background-color: var(--color-white);
+  padding: 1rem;
+  border: var(--border);
+  &:focus {
+    border-color: var(--color-gray-lite);
   }
 }
 
@@ -59,5 +67,7 @@ label {
   display: block;
 }
 
-
+.hidden {
+  @include visually-hidden;
+}
 </style>

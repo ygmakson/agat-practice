@@ -29,7 +29,8 @@ defineExpose({
   white-space: nowrap;
   border: 1px solid var(--color-yellow);
   @include hover {
-    background: none;
+    color: var(--color-black);
+    border-color: var(--color-black);
   }
 }
 </style>

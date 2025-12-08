@@ -75,8 +75,8 @@ function validForm() {
           id="form-modal"
           @submit.prevent="validForm"
       >
-        <FormInput :hasError="errName" ref="inputName" label="имя" placeholder="Имя" id="name" />
-        <FormInput :hasError="errPhone" ref="inputPhone" label="телефон" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" />
+        <FormInput :visuallyLabel="true" :hasError="errName" ref="inputName" label="имя" placeholder="Имя" id="name" />
+        <FormInput :visuallyLabel="true" :hasError="errPhone" ref="inputPhone" label="телефон" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" />
         <div class="modal__bottom">
           <label for="" :class="{'check-error': errCheck}">
             <input type="checkbox" v-model="checkForm" class="checkbox" id="requirment-phone" >
