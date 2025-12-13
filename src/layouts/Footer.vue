@@ -15,5 +15,7 @@ import FooterInfo from "@/layouts/FooterInfo.vue";
     scoped
     lang="scss"
 >
-
+.footer {
+  margin-top: 32px;
+}
 </style>

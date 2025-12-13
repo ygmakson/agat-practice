@@ -3,35 +3,30 @@ import Cart from '@/assets/images/icons/cart.svg'
 import YellowButton from "@/components/YellowButton.vue";
 
 const props = defineProps({
-  img1: String,
-  img2: String,
-  img3: String,
-  img4: String,
-  carName: String,
-  type: String,
-  engineVolume: String,
-  horsePower: String
+  car: Object
 })
+
+console.log(props.car)
 </script>
 <template>
-<li class="car">
+<li v-if="car.preview_picture" class="car">
   <div class="car__img">
     <img
-        src="@/assets/images/cars/car-1-1.jpg"
+        :src="car.preview_picture.path"
         alt="car"
     >
   </div>
   <div class="car__info">
     <div class="car__info-top">
-      <h2>ГАЗ Промтоварный фургон на базе ГАЗон NEXT</h2>
-      <p>Шасси, 5.9 л / 270 л. с., Задний привод, МКПП, Дизельный</p>
+      <h2>{{car.model}}</h2>
+      <p>{{car.propertyValues.body_type}}, {{ car.propertyValues.engine_volume }} л / {{ car.propertyValues.engine_power}} л. с., {{car.propertyValues.gear_type}} привод, {{car.propertyValues.transmission}}, {{ car.propertyValues.engine_type }}</p>
     </div>
     <div class="car__info-bot">
       <div class="car__info-bot-left">
-        <span>Доступна для заказа <Cart /></span>
+        <span v-if="car.propertyValues.for_sale == 1">Доступна для заказа <Cart /></span>
         <div class="car__price">
-          <h2 class="car__price-act">6 239 000 Р</h2>
-          <span class="car__price-old">7 239 000 Р</span>
+          <h2 class="car__price-act">{{ car.price }} Р</h2>
+          <span v-if="car.old_price" class="car__price-old">{{ car.old_price }}</span>
         </div>
       </div>
       <YellowButton class="car__btn">Оставить заявку</YellowButton>
@@ -49,28 +44,40 @@ const props = defineProps({
 
 .car {
   display: flex;
-  gap: rem(20);
+  gap: fluid(20, 10);
   height: fit-content;
   border-top: 1px solid var(--color-yellow);
   border-bottom: 1px solid var(--color-yellow);
   padding-block: 1rem;
+  width: 100%;
+  &:not(:first-child) {
+
+  }
   @include tablet {
     padding-inline: rem(20);
   }
 
   @include mobile {
     flex-direction: column;
+    align-items: center;
   }
 
   &__img {
-    min-width: rem(293);
+    max-width: rem(293);
     min-height: rem(293);
+    overflow: hidden;
+    img {
+      object-fit: cover;
+      object-position: right;
+      width: 100%;
+      height: 100%;
+    }
     @include tablet {
-      min-width: rem(226);
+      max-width: rem(226);
       min-height: rem(226);
     }
     @include mobile {
-      min-width: rem(278);
+      max-width: rem(278);
       min-height: rem(278);
     }
     overflow: hidden;
@@ -84,6 +91,7 @@ const props = defineProps({
   }
 
   &__info {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -104,12 +112,23 @@ const props = defineProps({
       justify-content: space-between;
       align-items: end;
 
+      @include mobile {
+        margin-top: 1rem;
+      }
+
       &-left {
         display: flex;
         flex-direction: column;
         gap: .5rem;
+
+        @include mobile {
+          display: none;
+        }
         span {
           opacity: 50%;
+          @media (max-width: 700px) {
+            display: none;
+          }
         }
       }
     }
@@ -122,12 +141,18 @@ const props = defineProps({
     &-old {
       text-decoration: line-through;
       opacity: 50%;
+      @media (max-width: 700px) {
+        display: none;
+      }
     }
   }
 
   &__btn {
     padding-inline: fluid(32, 16);
     font-size: fluid(16, 14);
+    @include mobile {
+      width: 100%;
+    }
   }
 }
 </style>
