@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import CatalogueVue from "@/views/CatalogueView.vue"
+import CatalogueView from "@/views/CatalogueView.vue"
+import MainView from "@/views/MainView.vue";
 
 
 const routes = [
-  { path: '/', component: CatalogueVue },
+  { path: '/', component: MainView },
+  { path: '/catalogue', component: CatalogueView },
 ]
 
 const router = createRouter({

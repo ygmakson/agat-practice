@@ -18,7 +18,7 @@ function OpenNav(state) {
 }
 
 const pages = ref([
-  {page: 'Каталог продукции', path: '/'},
+  {page: 'Каталог продукции', path: '/catalogue'},
   {page: 'Производители', path: '/'},
   {page: 'Сервисное обслуживание', path: '/'},
   {page: 'Акции', path: '/'},

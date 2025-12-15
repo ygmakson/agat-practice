@@ -6,6 +6,7 @@ import CarList from "@/layouts/CarList.vue";
 const props = defineProps({
   trucks: Array
 })
+
 </script>
 
 
@@ -33,6 +34,7 @@ const props = defineProps({
   &__body {
     display: flex;
     gap: rem(24);
+    margin-top: 32px;
 
     @include tablet {
       flex-direction: column;

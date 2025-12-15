@@ -3,6 +3,7 @@ import {ref} from "vue";
 import DropdownList from "@/components/DropdownList.vue";
 import YellowButton from "@/components/YellowButton.vue";
 import CloseBtn from "@/assets/images/icons/close-modal.svg"
+import FilterIcon from '@/assets/images/icons/filter-icon.svg'
 
 const chosenType = ref('')
 function choseType(value) {
@@ -46,7 +47,7 @@ function toggleMenu() {
 </script>
 
 <template>
-  <YellowButton @click="toggleMenu" class="filter__btn">Фильтр</YellowButton>
+  <YellowButton @click="toggleMenu" class="filter__btn"><FilterIcon /> Фильтр</YellowButton>
 <div class="filter" :class="{active: isOpen}">
   <div class="filter__inner">
     <div class="filter__title">Подобрать технику <button @click="toggleMenu"><CloseBtn /></button></div>
@@ -132,6 +133,7 @@ function toggleMenu() {
   }
 
   &__btn {
+    margin-inline: rem(10);
     @include tablet-above {
       display: none;
     }
