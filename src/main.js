@@ -6,15 +6,14 @@ import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import '@/styles/main.scss'
 import {IMaskComponent, IMaskDirective} from "vue-imask";
 
+const app = createApp(App)
+app.use(router)
+app.component('imask-input', IMaskComponent)
+app.directive('mask', IMaskDirective)
 
 Fancybox.bind('[data-fancybox]', {
   closeButton: false,
   dragToClose: false,
 })
 
-const app = createApp(App)
-
-app.component('imask-input', IMaskComponent)
-app.directive('mask', IMaskDirective)
-app.use(router)
 app.mount("#app")

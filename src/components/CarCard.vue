@@ -17,10 +17,10 @@ console.log(props.car)
     >
   </div>
   <div class="car__info">
-    <div class="car__info-top">
+      <router-link :to="`/catalogue/${car.id}`" class="car__info-top">
       <h2>{{car.model}}</h2>
       <p>{{car.propertyValues.body_type}}, {{ car.propertyValues.engine_volume }} л / {{ car.propertyValues.engine_power}} л. с., {{car.propertyValues.gear_type}} привод, {{car.propertyValues.transmission}}, {{ car.propertyValues.engine_type }}</p>
-    </div>
+      </router-link>
     <div class="car__info-bot">
       <div class="car__info-bot-left">
         <span v-if="car.propertyValues.for_sale == 1">Доступна для заказа <Cart /></span>
@@ -50,6 +50,10 @@ console.log(props.car)
   border-bottom: 1px solid var(--color-yellow);
   padding-block: 1rem;
   width: 100%;
+
+    &__info-top {
+        color: black;
+    }
   &:not(:first-child) {
 
   }

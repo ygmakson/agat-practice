@@ -38,7 +38,9 @@ const pages = ref([
   </div>
   <div class="header__bottom">
     <div v-if="!isMobile" class="header__bottom-inner container">
-      <Logo class="header__logo"/>
+        <RouterLink to="/">
+            <Logo class="header__logo"/>
+        </RouterLink>
       <SearchInput class="header__search"/>
       <BurgerButtonMenu @OpenCloseNav="OpenNav" class="header__burger"/>
     </div>
@@ -47,7 +49,9 @@ const pages = ref([
 
     <div v-if="isMobile" class="header__bottom-inner-mobile container">
       <div class="header__bottom-top">
-        <Logo class="header__logo"/>
+          <RouterLink to="/">
+            <Logo class="header__logo"/>
+          </RouterLink>
         <BurgerButtonMenu @OpenCloseNav="OpenNav" class="header__burger"/>
       </div>
       <SearchInput class="header__search"/>

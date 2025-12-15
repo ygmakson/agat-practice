@@ -8,6 +8,65 @@ const masks = {
   phoneMask: '+{7} (000) 000-00-00',
 }
 
+const formData = ref({
+    name: '',
+    phone: '',
+    email: ''
+})
+
+const errors = ref({
+    agree: '',
+    name: '',
+    phone: '',
+    email: ''
+})
+
+const validationRules = {
+    name: [
+        {
+            validator: (value) => value.trim().length > 0,
+            message: 'Имя обязательно для заполнения'
+        }
+    ],
+    phone: [
+        {
+            validator: (value) => value.trim().length > 0,
+            message: 'Телефон обязателен для заполнения'
+        }
+    ],
+    agree: [
+        {
+            validator: (value) => value === true,
+            message: 'Необходимо согласие на обработку данных'
+        }
+    ]
+}
+
+const formValidate = () => {
+    Object.keys(errors.value).forEach(key => {
+        errors.value[key] = ''
+    })
+
+    let isValid = true
+
+    Object.keys(validationRules).forEach(fieldName => {
+        const fieldRules = validationRules[fieldName]
+        const fieldValue = formData.value[fieldName]
+
+        for (const rule of fieldRules) {
+            if (!rule.validator(fieldValue)) {
+                errors.value[fieldName] = rule.message
+                isValid = false
+                break
+            }
+        }
+    })
+
+    return isValid
+}
+
+// TODO: все что ниже уничтожить
+
 const phone = ref('')
 const name = ref('')
 const email = ref('')
@@ -42,6 +101,8 @@ function validForm() {
     window.location.reload()
   }
 }
+// TODO: and
+
 </script>
 
 <template>
@@ -55,9 +116,10 @@ function validForm() {
         id="fform-form"
     >
       <div class="fform__top">
-        <FormInput class="fform__input" :hasError="errName" ref="inputName" id="ffooter-name" :visuallyLabel="false" label="имя" placeholder="Имя"/>
-        <FormInput class="fform__input" :hasError="errPhone" ref="inputPhone" id="ffooter-name" :mask="masks.phoneMask" :visuallyLabel="false" label="телефон" placeholder="+7 (___) ___-__-__"/>
-        <FormInput class="fform__input" :hasError="errEmail" ref="inputEmail" id="ffooter-name" :visuallyLabel="false" label="e-mail" placeholder="E-mail"/>
+          <!-- TODO ID одинаковые! -->
+        <FormInput v-model="formData.name" class="fform__input" :hasError="errName" ref="inputName" id="ffooter-name" :visuallyLabel="false" label="имя" placeholder="Имя"/>
+        <FormInput v-model="formData.phone" class="fform__input" :hasError="errPhone" ref="inputPhone" id="ffooter-name" :mask="masks.phoneMask" :visuallyLabel="false" label="телефон" placeholder="+7 (___) ___-__-__"/>
+        <FormInput v-model="formData.email" class="fform__input" :hasError="errEmail" ref="inputEmail" id="ffooter-name" :visuallyLabel="false" label="e-mail" placeholder="E-mail"/>
       </div>
       <div class="fform__bottom">
         <label for="" :class="{'check-error': errCheck}">
