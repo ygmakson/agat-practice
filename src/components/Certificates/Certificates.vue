@@ -58,8 +58,8 @@ const certificates = ref([
 @use '@/styles/helpers' as *;
 
 .certificates {
-  margin-top: 32px;
-  padding-block: 1rem;
+  padding-block: 3rem;
+  background-color: var(--color-gray-opacity);
 
   &__inner {
     position: relative;

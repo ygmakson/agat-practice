@@ -54,7 +54,7 @@ function swapCategory(value) {
 <section class="news">
   <div class="news__inner container">
     <h2>Новости</h2>
-    <Swiper :modules="modules" :mousewheel="true" :slides-per-view="'auto'" :space-between="20" class="news__categories">
+    <Swiper :modules="modules" :slides-per-view="'auto'" :space-between="20" class="news__categories">
       <SwiperSlide v-for="category in categories" :key="category.category" >
         <NewsCategoryListItem :class="{active: chosenCategory === category.category}" @click="swapCategory(category.category)" :category="category.category" :path="category.path"/>
       </SwiperSlide>
@@ -84,6 +84,7 @@ function swapCategory(value) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-inline: hidden;
   }
   &__categoties {
     padding-block: .5rem;

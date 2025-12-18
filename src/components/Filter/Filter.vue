@@ -4,6 +4,8 @@ import DropdownList from "@/components/Filter/DropdownList.vue";
 import YellowButton from "@/components/UI/YellowButton.vue";
 import CloseBtn from "@/assets/images/icons/close-modal.svg"
 import FilterIcon from '@/assets/images/icons/filter-icon.svg'
+import FilterGearboxes from "@/components/Filter/FilterGearboxes.vue";
+import FilterDrive from "@/components/Filter/FilterDrive.vue";
 
 const chosenType = ref('')
 function choseType(value) {
@@ -27,7 +29,7 @@ const brands = ['KAMAZ', 'SHACMAN', 'HINO', 'MAZ', 'Daewoo Trucks', 'Агром�
 const transmissions = ['МКПП', 'АКПП']
 
 // Двигатель: лошадиные силы
-const enginePowers = [100, 150, 200, 201]
+const enginePowers = ['до 100 л.с.', '100-150 л.с.', '150-200 л.с.', '200+ л.с.']
 
 // Тип двигателя
 const engineTypes = ['Бензиновый', 'Дизельный', 'Газовый']
@@ -36,7 +38,7 @@ const engineTypes = ['Бензиновый', 'Дизельный', 'Газовы
 const drives = ['Передний', 'Задний', 'Полный']
 
 // Масса
-const weights = [1, 2, 3, 4, 5]
+const weights = ['1 тонна', '2 тонны', '3 тонны', '4 тонны', '5 тонн']
 
 
 const isOpen = ref(false)
@@ -60,9 +62,10 @@ function toggleMenu() {
     </ul>
     <DropdownList class="filter__dropdown" title="Бренды" :items="brands" />
     <DropdownList class="filter__dropdown" title="Тип коробки передач" :items="transmissions" />
+    <FilterGearboxes />
     <DropdownList class="filter__dropdown" title="Мощность двигателя" :items="enginePowers" />
     <DropdownList class="filter__dropdown" title="Тип двигателя" :items="engineTypes" />
-    <DropdownList class="filter__dropdown" title="Привод" :items="drives" />
+    <FilterDrive />
     <DropdownList class="filter__dropdown" title="Масса" :items="weights" />
 
   </div>
@@ -84,6 +87,7 @@ function toggleMenu() {
   flex-direction: column;
   align-items: center;
   transition-duration: .2s;
+  height: fit-content;
   @include tablet {
     transform: translateX(100%);
     position: fixed;
