@@ -1,18 +1,21 @@
 <script setup>
 import YellowButton from "@/components/UI/YellowButton.vue";
 
-defineProps({
+const props = defineProps({
   car: Object
 })
+
+const formattedPrice = Number(props.car.price).toLocaleString('ru-RU')
+
 </script>
 
 <template>
 <div class="head">
   <div class="head__inner container">
-    <h2>{{car.model}}</h2>
+    <h2>{{props.car.model}}</h2>
     <div class="head__left">
       <router-link class="head__credit" to="#"><YellowButton class="head__btn">Оставить заявку</YellowButton></router-link>
-      <div class="head__price">{{car.price}} ₽</div>
+      <div class="head__price">{{ formattedPrice }} ₽</div>
     </div>
   </div>
 

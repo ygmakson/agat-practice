@@ -15,33 +15,73 @@ const masks = {
   phoneMask: '+{7} (000) 000-00-00',
 }
 
-const phone = ref('')
-const name = ref('')
-const checkForm = ref(false)
+// данные формы
+const formData = ref({
+  name: '',
+  phone: '',
+  email: '',
+  agree: false,
+})
 
-const inputName = ref(null)
-const inputPhone = ref(null)
-const checkBox = ref(null)
+// ошибки (строки!)
+const errors = ref({
+  name: false,
+  phone: false,
+  agree: false,
+})
 
-const errName = ref(false)
-const errPhone = ref(false)
-const errCheck = ref(false)
+// правила валидации
+const validationRules = {
+  name: [
+    {
+      validator: value => value.trim().length > 0,
+      message: 'Имя обязательно для заполнения',
+    },
+  ],
+  phone: [
+    {
+      validator: value => value.trim().length > 0,
+      message: 'Телефон обязателен для заполнения',
+    },
+  ],
+  agree: [
+    {
+      validator: value => value === true,
+      message: 'Необходимо согласие на обработку данных',
+    },
+  ],
+}
 
-function validForm() {
-  const valueName = inputName.value.inputRef.value
-  const valuePhone = inputPhone.value.inputRef.value
-  errName.value = valueName.trim().length < 2;
-  errName.value ? inputName.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputName.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
-  errPhone.value = valuePhone.length < 18;
-  errPhone.value ? inputPhone.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputPhone.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
-  errCheck.value = !checkForm.value;
-  errCheck.value ? checkBox.value.style.borderColor = 'var(--color-yellow)' : ''
-  if (!errName.value && !errPhone.value && !errCheck.value) {
-    console.log(`Имя: ${valueName}
-    Телефон: ${valuePhone}
-    Согласие на обработку данных: ${checkForm.value}`)
-    window.location.reload()
-  }
+function validateForm() {
+  let isValid = true
+
+  // очищаем ошибки
+  Object.keys(errors.value).forEach(key => {
+    errors.value[key] = false
+  })
+
+  // проверяем поля
+  Object.keys(validationRules).forEach(field => {
+    const rules = validationRules[field]
+    const value = formData.value[field]
+
+    for (const rule of rules) {
+      if (!rule.validator(value)) {
+        errors.value[field] = true
+        isValid = false
+        break
+      }
+    }
+  })
+
+  return isValid
+}
+function submitForm() {
+  if (!validateForm()) return
+  console.log('Форма валидна', formData.value)
+
+
+  // отправка данных / очистка формы
 }
 
 
@@ -69,17 +109,41 @@ function validForm() {
         action="#"
         class="modal__form"
         id="form-modal"
-        @submit.prevent="validForm"
+        @submit.prevent="submitForm"
     >
-      <FormInput :visuallyLabel="true" :hasError="errName" ref="inputName" label="имя" placeholder="Имя" id="name" />
-      <FormInput :visuallyLabel="true" :hasError="errPhone" ref="inputPhone" label="телефон" placeholder="+7 (___) ___-__-__" id="phone" type="tel" :mask="masks.phoneMask" />
+      <FormInput
+          v-model="formData.name"
+          label="имя"
+          placeholder="Имя"
+          :hasError="errors.name"
+          :visuallyLabel="true"
+      />
+
+      <FormInput
+          v-model="formData.phone"
+          label="телефон"
+          placeholder="+7 (___) ___-__-__"
+          :mask="masks.phoneMask"
+          :hasError="errors.phone"
+          :visuallyLabel="true"
+      />
       <div class="modal__bottom">
-        <label for="" :class="{'check-error': errCheck}">
-          <input type="checkbox" v-model="checkForm" class="checkbox" id="requirment-phone" >
-          <span ref="checkBox" class="checkbox-custom"></span>
-          Даю согласие на обработку персональных данных
+        <p :class="{'visually-hidden': !errors.agree}">Необходимо согласие</p>
+        <label
+            class="checkbox-label"
+        >
+          <input
+              type="checkbox"
+              v-model="formData.agree"
+              class="checkbox"
+          />
+          <span class="checkbox-custom" :class="{ 'check-error': errors.agree }"></span>
+          <a href="#">Даю согласие на обработку персональных данных</a>
         </label>
-        <YellowButton ref="submitBtn" @click="validForm" class="modal__btn" form="form-modal">Заказать звонок</YellowButton>
+
+        <YellowButton type="submit" class="modal__btn" @click="validateForm">
+          Заказать звонок
+        </YellowButton>
       </div>
     </form>
   </ModalWindow>
@@ -123,13 +187,6 @@ function validForm() {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-  }
-
-  &__label {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
   }
 
   &__input {
@@ -151,6 +208,11 @@ function validForm() {
     @include mobile {
       flex-direction: column;
       gap: 2rem;
+    }
+
+    p {
+      color: var(--color-yellow);
+      font-size: rem(14);
     }
 
     label {
@@ -182,6 +244,14 @@ function validForm() {
         background-repeat: no-repeat;
         background-position: center;
       }
+
+      a {
+        color: var(--color-gray-dark);
+
+        @include hover {
+          text-decoration: underline;
+        }
+      }
     }
 
   }
@@ -198,12 +268,6 @@ function validForm() {
 }
 
 .check-error {
-  &::after {
-    content: 'Подтвердите согласие';
-    color: var(--color-yellow);
-    font-size: rem(14);
-    position: absolute;
-    bottom: -20px;
-  }
+  border-color: var(--color-yellow);
 }
 </style>

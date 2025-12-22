@@ -88,7 +88,7 @@ function hideList() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: rem(80);
+    width: rem(70);
   }
 }
 

@@ -5,6 +5,7 @@ import path from 'path'
 
 
 export default defineConfig({
+  base:'/agat-practice/',
   plugins: [
     vue(),
     SvgLoader()

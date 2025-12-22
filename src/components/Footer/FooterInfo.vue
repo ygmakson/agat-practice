@@ -96,6 +96,7 @@ import Zen from '@/assets/images/icons/zen.svg'
 
 .finfo {
   background: url("@/assets/images/footer-bg.jpg") no-repeat center / cover;
+  font-size: fluid(14, 12);
 
   &__inner {
     display: flex;

@@ -6,10 +6,12 @@ const props = defineProps({
   car: Object
 })
 
-console.log(props.car)
+const formattedPrice = Number(props.car.price).toLocaleString('ru-RU')
+
+
 </script>
 <template>
-<li v-if="car.preview_picture" class="car">
+<li class="car">
   <div class="car__img">
     <img
         :src="car.preview_picture.path"
@@ -25,7 +27,7 @@ console.log(props.car)
       <div class="car__info-bot-left">
         <span v-if="car.propertyValues.for_sale == 1">Доступна для заказа <Cart /></span>
         <div class="car__price">
-          <h2 class="car__price-act">{{ car.price }} Р</h2>
+          <h2 class="car__price-act">{{ formattedPrice }} Р</h2>
           <span v-if="car.old_price" class="car__price-old">{{ car.old_price }}</span>
         </div>
       </div>

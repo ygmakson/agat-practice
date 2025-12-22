@@ -19,9 +19,9 @@ function OpenNav(state) {
 
 const pages = ref([
   {page: 'Каталог продукции', path: '/catalogue'},
-  {page: 'Производители', path: '/'},
+  {page: 'Контакты', path: '/contacts'},
   {page: 'Сервисное обслуживание', path: '/'},
-  {page: 'Акции', path: '/'},
+  {page: 'Новости', path: '/news'},
   {page: 'Услуги', path: '/'},
   {page: 'О компании', path: '/'},
 ])
@@ -33,7 +33,7 @@ const pages = ref([
   <div class="header__top">
     <div class="header__top-inner container">
       <PhoneModal />
-      <a href="https://yandex.ru/maps/47/nizhny-novgorod/house/moskovskoye_shosse_1/YEoYfwNnQEcPQFtsfX9zdHpqYA==/?indoorLevel=1&ll=43.949568%2C56.326527&mode=search&sctx=ZAAAAAgBEAAaKAoSCehn6nWL6EVAEXPZ6JyfLkxAEhIJ%2FP1itmRV0D8R9nzNctnovD8iBgABAgMEBSgKOABAgo8HSAFqAnJ1nQHNzMw9oAEAqAEAvQEWI7mMggJQ0LrQsNC6INC%2F0L7QvNC10YHRgtC40YLRjCDRjdC70LXQvNC10L3RgiDQsiDQutC%2B0L3QtdGGIGZsZXgg0LrQvtC90YLQtdC50L3QtdGA0LCKAgCSAgCaAgxkZXNrdG9wLW1hcHM%3D&sll=43.949568%2C56.326527&source=serp_navig&sspn=0.019683%2C0.006835&text=%D0%BA%D0%B0%D0%BA%20%D0%BF%D0%BE%D0%BC%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D1%8D%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%20%D0%B2%20%D0%BA%D0%BE%D0%BD%D0%B5%D1%86%20flex%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0&z=16.61" target="_blank">Нижний Новгород <GeoPoint /></a>
+      <a href="https://yandex.ru/maps/47/nizhny-novgorod/house/moskovskoye_shosse_1/YEoYfwNnQEcPQFtsfX9zdHpqYA==/?indoorLevel=1&ll=43.949568%2C56.326527&mode=search&sctx=ZAAAAAgBEAAaKAoSCehn6nWL6EVAEXPZ6JyfLkxAEhIJ%2FP1itmRV0D8R9nzNctnovD8iBgABAgMEBSgKOABAgo8HSAFqAnJ1nQHNzMw9oAEAqAEAvQEWI7mMggJQ0LrQsNC6INC%2F0L7QvNC10YHRgtC40YLRjCDRjdC70LXQvNC10L3RgiDQsiDQutC%2B0L3QtdGGIGZsZXgg0LrQvtC90YLQtdC50L3QtdGA0LCKAgCSAgCaAgxkZXNrdG9wLW1hcHM%3D&sll=43.949568%2C56.326527&source=serp_navig&sspn=0.019683%2C0.006835&text=%D0%BA%D0%B0%D0%BA%20%D0%BF%D0%BE%D0%BC%D0%B5%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D1%8D%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%20%D0%B2%20%D0%BA%D0%BE%D0%BD%D0%B5%D1%86%20flex%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0&z=16.61" target="_blank"> <GeoPoint class="header__top-icon" /> Нижний Новгород </a>
     </div>
   </div>
   <div class="header__bottom">
@@ -77,10 +77,10 @@ const pages = ref([
 
 
 .header {
-  position: sticky;
   width: 100vw;
   top: 0;
   z-index: 99;
+  position: relative;
   &__top {
     position: relative;
     z-index: 20;
@@ -95,9 +95,16 @@ const pages = ref([
       font-size: fluid(16, 12);
       display: flex;
       align-items: center;
+      gap: .1rem;
       @include hover {
         text-decoration: underline;
       }
+    }
+
+    &-icon {
+      width: 1rem;
+      height: 1rem;
+      fill: var(--color-white);
     }
   }
 
@@ -132,19 +139,16 @@ const pages = ref([
   }
 
   &__nav {
-    position: fixed;
+    position: absolute;
     display: flex;
     width: 100vw;
+    height: fit-content;
     flex-direction: column;
     background-color: var(--color-gray);
     transform: translateY(-150%);
     transition-duration: .2s;
-    max-height: 51px;
-    @include hide;
-    @include tablet {
-      max-height: 307px;
-    }
     &-list {
+      background-color: var(--color-gray);
       width: 100%;
       display: flex;
       justify-content: space-between;
@@ -161,7 +165,6 @@ const pages = ref([
 
 .nav-active {
   @include show;
-  height: 100%;
   transform: translateY(0);
 }
 

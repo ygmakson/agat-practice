@@ -37,7 +37,7 @@ const props = defineProps({
 @use '@/styles/helpers' as *;
 
 .news-item {
-  width: fluid(400, 310);
+  width: 100%;
   display: flex;
   flex-direction: column;
   transition-duration: .2s;

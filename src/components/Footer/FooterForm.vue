@@ -1,138 +1,153 @@
 <script setup>
-
-import FormInput from "@/components/FormInput.vue";
-import YellowButton from "@/components/UI/YellowButton.vue";
-import {ref} from "vue";
+import { ref } from "vue"
+import FormInput from "@/components/FormInput.vue"
+import YellowButton from "@/components/UI/YellowButton.vue"
 
 const masks = {
-  phoneMask: '+{7} (000) 000-00-00',
+  phone: '+{7} (000) 000-00-00',
 }
 
+// данные формы
 const formData = ref({
-    name: '',
-    phone: '',
-    email: ''
+  name: '',
+  phone: '',
+  email: '',
+  agree: false,
 })
 
+// ошибки (строки!)
 const errors = ref({
-    agree: '',
-    name: '',
-    phone: '',
-    email: ''
+  name: false,
+  phone: false,
+  email: false,
+  agree: false,
 })
 
+// правила валидации
 const validationRules = {
-    name: [
-        {
-            validator: (value) => value.trim().length > 0,
-            message: 'Имя обязательно для заполнения'
-        }
-    ],
-    phone: [
-        {
-            validator: (value) => value.trim().length > 0,
-            message: 'Телефон обязателен для заполнения'
-        }
-    ],
-    agree: [
-        {
-            validator: (value) => value === true,
-            message: 'Необходимо согласие на обработку данных'
-        }
-    ]
+  name: [
+    {
+      validator: value => value.trim().length > 0,
+      message: 'Имя обязательно для заполнения',
+    },
+  ],
+  phone: [
+    {
+      validator: value => value.trim().length > 0,
+      message: 'Телефон обязателен для заполнения',
+    },
+  ],
+  email: [
+    {
+      validator: value => /^\S+@\S+\.\S+$/.test(value),
+      message: 'Введите корректный email',
+    },
+  ],
+  agree: [
+    {
+      validator: value => value === true,
+      message: 'Необходимо согласие на обработку данных',
+    },
+  ],
 }
 
-const formValidate = () => {
-    Object.keys(errors.value).forEach(key => {
-        errors.value[key] = ''
-    })
+function validateForm() {
+  let isValid = true
 
-    let isValid = true
+  // очищаем ошибки
+  Object.keys(errors.value).forEach(key => {
+    errors.value[key] = false
+  })
 
-    Object.keys(validationRules).forEach(fieldName => {
-        const fieldRules = validationRules[fieldName]
-        const fieldValue = formData.value[fieldName]
+  // проверяем поля
+  Object.keys(validationRules).forEach(field => {
+    const rules = validationRules[field]
+    const value = formData.value[field]
 
-        for (const rule of fieldRules) {
-            if (!rule.validator(fieldValue)) {
-                errors.value[fieldName] = rule.message
-                isValid = false
-                break
-            }
-        }
-    })
+    for (const rule of rules) {
+      if (!rule.validator(value)) {
+        errors.value[field] = true
+        isValid = false
+        break
+      }
+    }
+  })
 
-    return isValid
+  return isValid
 }
 
-// TODO: все что ниже уничтожить
+function submitForm() {
+  if (!validateForm()) return
 
-const phone = ref('')
-const name = ref('')
-const email = ref('')
-const checkForm = ref(false)
+  console.log('Форма валидна', formData.value)
 
-const inputName = ref(null)
-const inputPhone = ref(null)
-const inputEmail = ref(null)
-const checkBox = ref(null)
-
-const errName = ref(false)
-const errPhone = ref(false)
-const errEmail = ref(false)
-const errCheck = ref(false)
-
-function validForm() {
-  const valueName = inputName.value.inputRef.value
-  const valuePhone = inputPhone.value.inputRef.value
-  const valueEmail = inputEmail.value.inputRef.value
-  errName.value = valueName.trim().length < 2;
-  errName.value ? inputName.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputName.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
-  errPhone.value = valuePhone.length < 18;
-  errPhone.value ? inputPhone.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputPhone.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
-  errEmail.value = valueEmail.trim().length < 2;
-  errEmail.value ? inputEmail.value.inputRef.style.borderColor = 'var(--color-yellow)' : inputEmail.value.inputRef.style.borderColor = 'var(--color-gray-lite)'
-  errCheck.value = !checkForm.value;
-  errCheck.value ? checkBox.value.style.borderColor = 'var(--color-yellow)' : ''
-  if (!errName.value && !errPhone.value && !errCheck.value && !errEmail.value) {
-    console.log(`Имя: ${valueName}
-    Телефон: ${valuePhone}
-    Согласие на обработку данных: ${checkForm.value}`)
-    window.location.reload()
-  }
+  // отправка данных / очистка формы
 }
-// TODO: and
-
 </script>
 
 <template>
-<section class="fform">
-  <div class="fform__inner container">
-    <h2 class="fform__title">Остались вопросы? С удовольствием ответим на них</h2>
-    <p class="fform__subtitle">Заполните форму обратной связи и наш сотрудник свяжется с вами в ближайшее время.</p>
-    <form
-        action="#"
-        class="fform__form"
-        id="fform-form"
-    >
-      <div class="fform__top">
-          <!-- TODO ID одинаковые! -->
-        <FormInput v-model="formData.name" class="fform__input" :hasError="errName" ref="inputName" id="ffooter-name" :visuallyLabel="false" label="имя" placeholder="Имя"/>
-        <FormInput v-model="formData.phone" class="fform__input" :hasError="errPhone" ref="inputPhone" id="ffooter-name" :mask="masks.phoneMask" :visuallyLabel="false" label="телефон" placeholder="+7 (___) ___-__-__"/>
-        <FormInput v-model="formData.email" class="fform__input" :hasError="errEmail" ref="inputEmail" id="ffooter-name" :visuallyLabel="false" label="e-mail" placeholder="E-mail"/>
-      </div>
-      <div class="fform__bottom">
-        <label for="" :class="{'check-error': errCheck}">
-          <input type="checkbox" v-model="checkForm" class="checkbox" id="requirment-phone" >
-          <span ref="checkBox" class="checkbox-custom"></span>
-          <a href="#">Даю согласие на обработку персональных данных</a>
-        </label>
-        <YellowButton ref="submitBtn" @click="validForm" class="fform__btn" form="form-modal">Заказать звонок</YellowButton>
-      </div>
-    </form>
-  </div>
-</section>
+  <section class="fform">
+    <div class="fform__inner container">
+      <h2 class="fform__title">
+        Остались вопросы? С удовольствием ответим на них
+      </h2>
+
+      <p class="fform__subtitle">
+        Заполните форму обратной связи и наш сотрудник свяжется с вами
+      </p>
+
+      <form class="fform__form" @submit.prevent="submitForm">
+        <div class="fform__top">
+          <FormInput
+              v-model="formData.name"
+              label="имя"
+              placeholder="Имя"
+              :visuallyLabel="false"
+              :hasError="errors.name"
+          />
+
+          <FormInput
+              v-model="formData.phone"
+              label="телефон"
+              placeholder="+7 (___) ___-__-__"
+              :mask="masks.phone"
+              :visuallyLabel="false"
+              :hasError="errors.phone"
+          />
+
+          <FormInput
+              v-model="formData.email"
+              label="e-mail"
+              placeholder="E-mail"
+              :visuallyLabel="false"
+              :hasError="errors.email"
+          />
+        </div>
+
+        <div class="fform__bottom">
+          <p :class="{'visually-hidden': !errors.agree}">Необходимо соглашение</p>
+          <label
+              class="checkbox-label"
+          >
+            <input
+                type="checkbox"
+                v-model="formData.agree"
+                class="checkbox"
+            />
+            <span class="checkbox-custom" :class="{ 'check-error': errors.agree }"></span>
+            <a href="#">Даю согласие на обработку персональных данных</a>
+          </label>
+
+          <YellowButton type="submit" class="fform__btn">
+            Заказать звонок
+          </YellowButton>
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
+
+
 
 <style
     scoped
@@ -182,6 +197,7 @@ function validForm() {
 
 
   &__bottom {
+    align-items: center;
     display: flex;
     margin-top: 1rem;
     font-size: rem(12);
@@ -233,6 +249,10 @@ function validForm() {
       }
     }
 
+    p {
+      font-size: rem(14);
+      color: var(--color-yellow);
+    }
   }
 
   &__btn {
@@ -241,5 +261,9 @@ function validForm() {
     padding-inline: .5rem;
     font-size: rem(14);
   }
+}
+
+.check-error {
+  border-color: var(--color-yellow);
 }
 </style>

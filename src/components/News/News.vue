@@ -88,6 +88,7 @@ function swapCategory(value) {
   }
   &__categoties {
     padding-block: .5rem;
+    overflow-inline: hidden;
   }
 
   &__list {

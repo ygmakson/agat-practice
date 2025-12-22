@@ -77,6 +77,9 @@ import Play from '@/assets/images/icons/video-play.svg'
     }
 
     &-link {
+      @include mobile-above {
+        display: none;
+      }
       color: var(--color-gray-dark);
       font-size: 1rem;
       @include hover {

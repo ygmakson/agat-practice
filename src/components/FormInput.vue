@@ -1,36 +1,46 @@
 <script setup>
-import {IMaskComponent, IMaskDirective} from "vue-imask";
-import {onMounted, ref} from "vue";
+import { IMaskDirective } from "vue-imask";
 
-defineProps({
+const props = defineProps({
   label: String,
   placeholder: String,
   mask: String,
-  type: {String, default: 'text'},
+  type: { type: String, default: 'text' },
   id: String,
   hasError: Boolean,
   modelValue: String,
   visuallyLabel: Boolean,
 })
 
-const inputRef = ref(null)
-
-// onMounted(() => {
-//   console.log(inputRef.value)
-// })
-
-defineExpose({
-  inputRef
-})
+const emit = defineEmits(['update:modelValue'])
 </script>
 
 <template>
   <div>
-    <label :class="{'visually-hidden': !visuallyLabel}" :for="id"> {{ label}}:</label>
-    <input ref="inputRef" v-mask="mask" class="input" :name="id" :id="id" :placeholder="placeholder" :type="type" />
-    <span :class="{active: hasError}">Введите {{label}} корректно</span>
+    <label
+        :class="{ 'visually-hidden': !visuallyLabel }"
+        :for="id"
+    >
+      {{ label }}:
+    </label>
+
+    <input
+        v-mask="mask"
+        class="input"
+        :class="{error: props.hasError}"
+        :id="id"
+        :name="id"
+        :type="type"
+        :placeholder="placeholder"
+        :value="modelValue"
+        @input="emit('update:modelValue', $event.target.value)"
+    />
+    <span :class="{ active: hasError }">
+      Введите {{ label }} корректно
+    </span>
   </div>
 </template>
+
 
 <style scoped lang="scss">
 @use '@/styles/helpers' as *;
@@ -69,5 +79,9 @@ span {
 
 .hidden {
   @include visually-hidden;
+}
+
+.error {
+  border-color: var(--color-yellow);
 }
 </style>
